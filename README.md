@@ -2,6 +2,28 @@
 Mutual Funds Analysis
 
 
+📊 Excited to share insights from my recent project on Mutual Fund Analysis! Here’s a glimpse into the journey:
+
+1️⃣ Leveraged the MFA API to gather comprehensive data from over 13,000 mutual funds.
+
+2️⃣ Applied rigorous data cleaning techniques to ensure accuracy and reliability.
+
+3️⃣ Calculated risk and returns based on the past 6 months' data, essential for informed decision-making.
+
+4️⃣ Conducted correlation analysis across the funds to understand their interrelationships.
+
+5️⃣ Grouped funds based on their negative, neutral, and positive correlations, identifying strategic clusters.
+
+6️⃣ Implemented Monte Carlo simulation, generating 100,000 portfolios with 9 funds each, incorporating diverse correlation scenarios.
+
+7️⃣ Utilized PowerBI to create dynamic dashboards, visualizing portfolio compositions and performance metrics.
+
+8️⃣ Plotted efficient frontier plots to visualize risk-return trade-offs, essential for optimizing portfolio strategies.
+
+9️⃣ Achieved a best Sharpe ratio of 21, highlighting the effectiveness of our approach in maximizing returns relative to risk.
+
+
+
 ```python
 import pandas as pd
 from sqlalchemy import create_engine
