@@ -26,7 +26,7 @@ Mutual Funds Analysis
 ![png](MutualFundsDashboard_page-0001.png)
 ![png](MutualFundsDashboard_page-0002.png)
 
-### Store Data in database (In my case, I have a dedicated server for database where I collect the data and read directly from the database.)
+### Store Data in database (In my case, I have a dedicated server for database where I collect the data and read directly from the database.) You can run the below code, It will automatically create the tables if not present. Make sure to create a database (mutual_funds) and enter your database creds.
 ```python
 from mftool import Mftool
 import re
