@@ -23,7 +23,8 @@ Mutual Funds Analysis
 9️⃣ Achieved a best Sharpe ratio of 21, highlighting the effectiveness of our approach in maximizing returns relative to risk.
 
 
-[![PDF Preview](https://github.com/akshayparate123/Mutual-Funds-Analysis/blob/main/MutualFundsDashboard.pdf)
+![png](output_39_1.png)
+![png](output_39_1.png)
 
 
 ```python
