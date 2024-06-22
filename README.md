@@ -1146,7 +1146,7 @@ return_risk_df["return"] = meanList
 return_risk_df["risk"] = stdList
 ```
 
-### Generate Random Portfolios
+### Generate Random Portfolios using Monte Carlo Simulation
 
 
 ```python
