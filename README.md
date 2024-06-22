@@ -26,7 +26,7 @@ Mutual Funds Analysis
 ![png](MutualFundsDashboard_page-0001.png)
 ![png](MutualFundsDashboard_page-0002.png)
 
-
+### Store Data in database (In my case, I have a dedicated server for database where I collect the data and read directly from the database.)
 ```python
 from mftool import Mftool
 import re
