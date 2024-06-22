@@ -28,6 +28,132 @@ Mutual Funds Analysis
 
 
 ```python
+from mftool import Mftool
+import re
+import pandas as pd
+import requests
+obj = Mftool()
+import os
+import mysql.connector
+
+
+from sqlalchemy import create_engine,text
+user = 'xxxxxxxxx'
+passw = 'xxxxxxxxx'
+host =  'xxx.xx.xxx.xxx'
+port = 3306
+database = 'mutual_funds'
+# Create an engine instance
+engine = create_engine(f'mysql+pymysql://{user}:{passw}@{host}:{port}/{database}')
+
+
+def is_table_present(database_name, table_name):
+    try:
+        connection = mysql.connector.connect(**database_config)
+        cursor = connection.cursor()
+        query = f"SHOW TABLES FROM {database_name}"
+        cursor.execute(query)
+
+        # Fetch all tables from the result
+        tables = [table[0] for table in cursor.fetchall()]
+        # Check if the target table is in the list
+        return table_name in tables
+
+    except mysql.connector.Error as e:
+        print(f"Error: {e}")
+        return False
+
+    finally:
+        # Close the cursor and connection
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+def updateMutualNav():
+    mutual_information_df = pd.read_sql('SELECT * FROM mutual_information', con=engine)
+    schemeCodesList = list(mutual_information_df["scheme_code"])
+    if is_table_present("mutual_funds", "mutual_nav"):
+        for i in range(0,len(schemeCodesList)):
+            print(schemeCodesList[i])
+            try:
+                data = obj.get_scheme_historical_nav(schemeCodesList[i])
+                df = pd.DataFrame(data["data"])
+                df["scheme_code"] = schemeCodesList[i]
+                existing_df = pd.read_sql('SELECT * FROM mutual_nav where scheme_code = {}'.format(schemeCodesList[i]), con=engine)
+                new_unique_df = df[~df['date'].isin(existing_df['date'])]
+                new_unique_df.to_sql('mutual_nav', con=engine, if_exists='append', index=False)
+            except Exception as e:
+                print("Error",e)
+            
+    else:
+        table_creation_query = "CREATE TABLE {} (id INT AUTO_INCREMENT PRIMARY KEY, date varchar(255), nav FLOAT, scheme_code int)".format("mutual_nav")
+        print(table_creation_query)
+        connection = mysql.connector.connect(**database_config)
+        cursor = connection.cursor()
+        cursor.execute(table_creation_query)
+        cursor.close()
+        for i in range(0,len(schemeCodesList)):
+            try:
+                print(schemeCodesList[i])
+                data = obj.get_scheme_historical_nav(schemeCodesList[i])
+                df = pd.DataFrame(data["data"])
+                df["scheme_code"] = schemeCodesList[i]
+                df.to_sql('mutual_nav', con=engine, if_exists='append', index=False)
+            except Exception as e:
+                print("Error",e)
+    
+# This table consists of mutual information.
+def updateMutualInformation():
+    data = obj.get_scheme_codes()
+    schemeCodes = list(data.keys())
+    if is_table_present("mutual_funds", "mutual_information"):
+        print("Table Present")
+        try:
+            df = pd.DataFrame(obj.get_scheme_details(schemeCodes[0]))
+            for i in range(1,len(schemeCodes)):
+                try:
+                    print(schemeCodes[i])
+                    det = obj.get_scheme_details(schemeCodes[i])
+                    df = df._append(det, ignore_index = True, sort=True)
+                except Exception as e:
+                    print(schemeCodes[i],"error",e)
+            #update
+            df.drop("scheme_start_date",axis = 1,inplace = True)
+            df.drop_duplicates(subset="scheme_code",keep=False, inplace=True)
+        except Exception as e:
+            print(schemeCodes[i])
+            print("Exception",e)
+        try:
+            existing_df = pd.read_sql('SELECT * FROM mutual_information', con=engine)
+            new_unique_df = df[~df['scheme_code'].isin(existing_df['scheme_code'])]
+            if not new_unique_df.empty:
+                new_unique_df.to_sql('mutual_information', con=engine, if_exists='append', index=False)
+        except Exception as e:
+            print("Error:", e)
+    else:
+        table_creation_query = "CREATE TABLE {} (scheme_code int PRIMARY KEY,fund_house varchar(255), scheme_type varchar(255), scheme_category varchar(255), scheme_name varchar(255))".format("mutual_Information")
+        print(table_creation_query)
+        connection = mysql.connector.connect(**database_config)
+        cursor = connection.cursor()
+        cursor.execute(table_creation_query)
+        cursor.close()
+        df = pd.DataFrame(obj.get_scheme_details(schemeCodes[0]))
+        for i in range(1,len(schemeCodes)):
+            det = obj.get_scheme_details(schemeCodes[i])
+            df = df._append(det, ignore_index = True, sort=True)
+        #update
+        df.drop("scheme_start_date",axis = 1,inplace = True)
+        df.drop_duplicates(subset="scheme_code",keep=False, inplace=True)
+        df.to_sql('mutual_information', con=engine, if_exists='append', index=False)
+
+updateMutualInformation()
+updateMutualNav()
+
+
+```
+
+```python
 import pandas as pd
 from sqlalchemy import create_engine
 import numpy as np
