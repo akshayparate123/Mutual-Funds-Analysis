@@ -22,6 +22,8 @@ Mutual Funds Analysis
 
 9️⃣ Achieved a best Sharpe ratio of 21, highlighting the effectiveness of our approach in maximizing returns relative to risk.
 
+Power BI published report
+https://app.powerbi.com/groups/me/reports/7ebbed61-bb67-4874-843a-a85302e336f2/02ccbab9826ddb827fd4?experience=power-bi
 
 ![png](MutualFundsDashboard_page-0001.png)
 ![png](MutualFundsDashboard_page-0002.png)
