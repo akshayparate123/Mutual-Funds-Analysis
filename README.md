@@ -28,7 +28,7 @@ https://app.powerbi.com/groups/me/reports/7ebbed61-bb67-4874-843a-a85302e336f2/0
 ![png](MutualFundsDashboard_page-0001.png)
 ![png](MutualFundsDashboard_page-0002.png)
 
-![Alt text](URL-to-your-GIF)
+![Alt text](https://github.com/akshayparate123/Mutual-Funds-Analysis/blob/main/MF.gif)
 
 
 ### Store Data in database (In my case, I have a dedicated server for database where I collect the data and read directly from the database.) You can run the below code, It will automatically create the tables if not present. Make sure to create a database (mutual_funds) and enter your database creds.
